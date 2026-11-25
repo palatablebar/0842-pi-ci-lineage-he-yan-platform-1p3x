@@ -21,6 +21,13 @@ def decide_rows(items):
         else:
             item["verdict"] = "PASS"
             item["reason"] = "CONSERVED"
+        cert = item.get("certification") if isinstance(item.get("certification"), dict) else {}
+        cert_verdict = item.get("certification_verdict") or cert.get("verdict")
+        if cert_verdict:
+            severity = {"PASS": 0, "REVIEW": 1, "REJECT": 2}
+            if severity.get(cert_verdict, 1) > severity.get(item["verdict"], 1):
+                item["verdict"] = cert_verdict
+                item["reason"] = cert.get("reason") or item.get("certification_status") or "CERT_REVIEW"
         item.setdefault("verdict", "PASS")
         item.setdefault("reason", "OK")
     return items

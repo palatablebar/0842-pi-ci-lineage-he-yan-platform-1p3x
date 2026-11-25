@@ -9,6 +9,34 @@
     {{ ui.metric("m-rejected", "阻断项") }}
   </section>
   <section class="board">
+    <article class="panel" id="panel-certification">
+      <div class="panel-head"><h2>认证原料占比承诺</h2><span class="hint" id="cert-summary">执行批次后显示保守承诺值与依据</span></div>
+      <div class="cert-controls">
+        <label>约定线
+          <input id="cert-threshold" type="text" value="0.90" inputmode="decimal" aria-label="约定认证原料占比">
+        </label>
+        <label>认证来源 JSON
+          <input id="cert-sources" type="text" placeholder='[{"lot_id":"L1","certified_qty":900}]' aria-label="认证原料来源">
+        </label>
+        <button id="cert-recalc" type="button">按当前样例试算</button>
+        <button id="cert-demo" type="button">填入 clean 演示口径</button>
+      </div>
+      <p class="hint">未归属损耗先按“全部为认证原料损失”保守扣减；同一血缘节点或共用损耗号只扣一次。最低占比达标才显示可签发，否则进入复核。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>批次</th><th>可承诺占比</th><th>投入平均占比</th><th>结论</th><th>依据</th></tr></thead>
+          <tbody id="cert-body"><tr><td colspan="5" class="empty">尚未计算</td></tr></tbody>
+        </table>
+      </div>
+      <form id="sorting-form" class="cert-controls">
+        <input id="sort-record-id" type="text" placeholder="记录号 record_id" aria-label="分拣记录号">
+        <input id="sort-lot-id" type="text" placeholder="归属批次 lot_id" aria-label="损耗批次">
+        <input id="sort-cert-qty" type="number" min="0" step="1" placeholder="认证损耗" aria-label="认证损耗数量">
+        <input id="sort-uncert-qty" type="number" min="0" step="1" placeholder="非认证损耗" aria-label="非认证损耗数量">
+        <button type="submit">登记晚到分拣记录</button>
+        <span class="hint" id="sorting-feedback"></span>
+      </form>
+    </article>
     <article class="panel" id="panel-table">
       <div class="panel-head"><h2>批次结果</h2><span class="hint" id="row-count">--</span></div>
       <div class="table-wrap">

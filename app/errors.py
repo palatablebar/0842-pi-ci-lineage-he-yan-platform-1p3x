@@ -18,6 +18,9 @@ MESSAGES = {
     "GATE_BLOCKED": "存在阻断项，不能签发",
     "NOT_APPROVED": "批次尚未签发",
     "BAD_REQUEST": "请求内容不完整",
+    "RECORD_CONFLICT": "同一记录号的内容不一致，已拒绝覆盖",
+    "BAD_THRESHOLD": "约定认证占比必须在 0 到 1（或 0% 到 100%）之间",
+    "QUANTITY_INCOMPLETE": "认证核算缺少必要数量",
 }
 
 

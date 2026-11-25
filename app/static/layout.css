@@ -7,7 +7,8 @@
 .p0842 .kpis{grid-template-columns:repeat(4,1fr)}
 .p0842 .metric{border:0;border-left:1px dashed var(--accent);border-radius:0;background:transparent}
 .p0842 .board{grid-template-columns:1.4fr .6fr}
-.p0842 #panel-table{grid-column:1/-1}.p0842 #panel-review{grid-column:1/-1}
+.p0842 #panel-table{grid-column:1/-1}.p0842 #panel-review{grid-column:1/-1}.p0842 #panel-certification{grid-column:1/-1}
+.cert-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:end;margin:8px 0}.cert-controls label{display:flex;flex-direction:column;gap:3px;font-size:12px}.cert-controls input{min-width:150px}.cert-controls button{white-space:nowrap}.cert-ratio{font-weight:700}.cert-PASS{color:var(--accent)}.cert-REVIEW,.cert-NO_EVIDENCE,.cert-NO_THRESHOLD,.cert-INSUFFICIENT_EVIDENCE{color:#9a6a00}.cert-REJECT,.cert-BELOW_THRESHOLD,.cert-BLOCKED{color:#9b2c2c}.cert-basis{min-width:280px}
 .p0842 .panel{border:0;border-top:1px dashed var(--ink);border-radius:0;background:transparent;padding:12px 0}
 .p0842 .panel-head::before{content:"$ ";color:var(--accent)}
 .p0842 th{border-bottom:1px dashed var(--line)}

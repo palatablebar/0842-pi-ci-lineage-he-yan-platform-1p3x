@@ -52,6 +52,15 @@ class Store:
             row = db.execute("SELECT * FROM runs WHERE id=?", (run_id,)).fetchone()
         return dict(row) if row else None
 
+    def update_payload(self, run_id, payload):
+        with self.connect() as db:
+            row = db.execute("SELECT * FROM runs WHERE id=?", (run_id,)).fetchone()
+            if row is None:
+                return None
+            db.execute("UPDATE runs SET payload=? WHERE id=?",
+                       (json.dumps(payload, ensure_ascii=False), run_id))
+        return self.get(run_id)
+
     def review(self, run_id, decision, comment, expected_revision):
         with self.connect() as db:
             db.execute("BEGIN IMMEDIATE")

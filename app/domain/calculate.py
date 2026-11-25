@@ -1,9 +1,16 @@
 from datetime import date, timedelta
 from app.catalog import SPEC
+from app.certification.engine import evaluate_certification
 from app.domain.helpers import *  # noqa: F401,F403
 
 
-def calculate_rows(items):
+_CERT_KEYS = {
+    "certified_qty", "certified_quantity", "cert_ratio", "certified_ratio",
+    "required_ratio", "threshold", "agreed_ratio", "sorting_records", "records",
+}
+
+
+def calculate_rows(items, sorting_records=None, records=None, threshold=None, **cert_kwargs):
     out = []
     rows = items
     lots = {item["lot_id"]: item for item in items}
@@ -54,4 +61,32 @@ def calculate_rows(items):
         out.append(item)
     for item in out:
         item.setdefault("label", str(item.get(SPEC["key"], "")))
+
+    has_cert_data = (
+        sorting_records is not None or records is not None or threshold is not None
+        or any(any(key in item for key in _CERT_KEYS) for item in out)
+    )
+    if has_cert_data:
+        record_data = sorting_records if sorting_records is not None else records
+        cert_report = evaluate_certification(
+            out,
+            records=record_data,
+            threshold=threshold,
+            **cert_kwargs,
+        )
+        cert_by_id = {row["lot_id"]: row for row in cert_report["batches"]}
+        for item in out:
+            cert = cert_by_id.get(str(item.get("lot_id", "")))
+            if cert:
+                item["certification"] = cert
+                item["certification_status"] = cert["status"]
+                item["certification_verdict"] = cert["verdict"]
+                item["committed_ratio"] = cert["committed_ratio"]
+                item["committed_ratio_text"] = cert["committed_ratio_text"]
+                item["certification_basis"] = cert["basis"]
     return out
+
+
+def calculate_certified_ratios(items, records=None, threshold=None, **kwargs):
+    """兼容命名：直接返回认证承诺报告。"""
+    return evaluate_certification(items, records=records, threshold=threshold, **kwargs)
